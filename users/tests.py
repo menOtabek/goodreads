@@ -66,11 +66,13 @@ class UserCreateTestCase(TestCase):
 
 
 class LoginTestCase(TestCase):
-    def test_user_login(self):
+    def setUp(self):
         user = User.objects.create(username='some_username', first_name='some_name')
         user.set_password('some_password')
         user.save()
 
+
+    def test_user_login(self):
         self.client.post(reverse('users:login'),
                          data={
                              'username': 'some_username',
@@ -79,11 +81,18 @@ class LoginTestCase(TestCase):
         user = get_user(self.client)
         self.assertTrue(user.is_authenticated)
 
-    def test_username_or_password_is_incorrect(self):
-        user = User.objects.create(username='some_username', first_name='some_name')
-        user.set_password('some_password')
-        user.save()
+    def test_logout(self):
+        self.client.post(reverse('users:login'),
+                         data={
+                             'username': 'some_username',
+                             'password': 'some_password'
+                         })
+        self.client.get(reverse('users:logout'))
+        user = get_user(self.client)
+        self.assertFalse(user.is_authenticated)
 
+
+    def test_username_or_password_is_incorrect(self):
         self.client.post(reverse('users:login'),
                          data={
                              'username': 'incorrect_username',
@@ -104,6 +113,7 @@ class ProfileTestCase(TestCase):
 
     def test_login_required(self):
         response = self.client.get(reverse('users:profile'))
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, reverse('users:login'))
 
     def test_profile_exists(self):
@@ -113,6 +123,7 @@ class ProfileTestCase(TestCase):
         user.save()
         self.client.login(username='username1', password='password1')
         response = self.client.get(reverse('users:profile'))
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, user.username)
         self.assertContains(response, user.first_name)
         self.assertContains(response, user.last_name)

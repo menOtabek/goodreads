@@ -1,4 +1,6 @@
-from django.contrib.auth import login
+from django.contrib import messages
+
+from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 from .forms import UserForms
@@ -38,7 +40,8 @@ class LoginView(View):
             return render(request, 'login.html', context)
         user = login_form.get_user()
         login(request, user)
-        return redirect('landing_page')
+        messages.success(request, 'You lave logged in')
+        return redirect('books:books_list')
 
 
 class ProfileView(View):
@@ -48,3 +51,9 @@ class ProfileView(View):
             return redirect("users:login")
         return render(request, 'profile.html', {'user': user})
 
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        messages.info(request, 'You have logged out')
+        return redirect('landing_page')
