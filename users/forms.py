@@ -1,10 +1,10 @@
 from django import forms
-from django.contrib.auth.models import User
+from .models import CustomUser
 
 
 class UserForms(forms.ModelForm):
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['username', 'first_name', 'last_name', 'email', 'password']
 
     def save(self, commit=True):
@@ -12,3 +12,9 @@ class UserForms(forms.ModelForm):
         user.set_password(self.cleaned_data['password'])
         user.save()
         return user
+
+
+class ProfileForms(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'first_name', 'last_name', 'email']

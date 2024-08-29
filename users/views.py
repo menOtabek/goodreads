@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
-from .forms import UserForms
+from .forms import UserForms, ProfileForms
 from django.views import View
 
 class RegisterView(View):
@@ -57,3 +57,23 @@ class LogoutView(View):
         logout(request)
         messages.info(request, 'You have logged out')
         return redirect('landing_page')
+
+
+class ProfileUpdateView(View):
+    def get(self, request):
+        profile_form = ProfileForms(instance=request.user)
+        context = {
+            'profile_form' : profile_form
+        }
+        return render(request, 'profile_update.html', context)
+
+    def post(self, request):
+        user = request.user
+        if not user.is_authenticated:
+            return redirect('register.html')
+        profile_form = ProfileForms(instance=request.user, data=request.POST)
+        if not profile_form.is_valid():
+            return redirect('profile_update.html', {'profile_form': profile_form})
+        profile_form.save()
+        messages.success(request, 'Profile updated successfully')
+        return render(request, 'profile.html')
