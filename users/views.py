@@ -71,7 +71,7 @@ class ProfileUpdateView(View):
         user = request.user
         if not user.is_authenticated:
             return redirect('register.html')
-        profile_form = ProfileForms(instance=request.user, data=request.POST)
+        profile_form = ProfileForms(instance=request.user, data=request.POST, files=request.FILES)
         if not profile_form.is_valid():
             return redirect('profile_update.html', {'profile_form': profile_form})
         profile_form.save()

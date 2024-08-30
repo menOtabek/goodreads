@@ -3,6 +3,7 @@
 {% block content %}
     <body>
     <h1>Profile Page</h1>
+    <img class="profile-pic" alt="Profile picture" src="{{ user.profile_picture.url }}">
     <p>Username: {{user.username}}</p>
     <p>Fist name: {{user.first_name}}</p>
     <p>Last name: {{user.last_name}}</p>
