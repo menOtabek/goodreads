@@ -2,15 +2,34 @@
 {% block title %}Books List Page{% endblock %}
 {% block content %}
     <body>
-    <h1>Books List Page</h1>
-    {% if books_list %}
-        <ul>
-                {% for book in books_list %}
-                    <li>
-                        <a href="{% url 'books:book_detail' book.id %}">{{ book.title }}</a>
-                    </li>
+    <h3>Books List Page</h3><br>
+    {% if page_obj %}
+                {% for book in page_obj %}
+                    <div class="row mt-4">
+                        <div class="col-2">
+                            <img class="book-pic" src="{{ book.book_picture.url }}">
+                        </div>
+                        <div class="col-6 ms-4">
+                            <a href="{% url 'books:book_detail' book.id %}">{{ book.title }}</a><br><br>
+                            <p>
+                                {{ book.description }}
+                            </p>
+                        </div>
+                    </div>
                 {% endfor %}
-        </ul> <br>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="{% url 'books:books_list' %}?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                {% endif %}
+                <li class="page-item"><a class="page-link" href="#">{{page_obj.number}}</a></li>
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="{% url 'books:books_list' %}?page={{ page_obj.next_page_number }}">Next</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+
     {% else %}
         Books not found
     {% endif %}

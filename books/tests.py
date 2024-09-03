@@ -14,7 +14,11 @@ class BookTestCase(TestCase):
 
 
     def test_book_detail(self):
-        book = Book.objects.create(title='some_title1', description='some_description1', isbn='some9498341')
-        response = self.client.get(reverse('books:book_detail', kwargs={'pk': book.id}))
-        self.assertContains(response, book.title)
-        self.assertContains(response, book.description)
+        book1 = Book.objects.create(title='some_title1', description='some_description1', isbn='some9498341')
+        book2 = Book.objects.create(title='some_title2', description='some_description2', isbn='some94982341')
+        book3 = Book.objects.create(title='some_title3', description='some_description3', isbn='some94983341')
+        response = self.client.get(reverse('books:books_list'))
+        for book in [book1, book2]:
+            self.assertContains(response, book.title)
+        response = self.client.get(reverse('books:books_list') + '?page=2')
+        self.assertContains(response, book3.title)

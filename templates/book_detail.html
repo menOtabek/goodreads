@@ -2,9 +2,14 @@
 {% block title %}Book Detail Page{% endblock %}
 {% block content %}
     <body>
-
-    <h1>Book Detail Page</h1>
-    <h2>{{ book_detail.title }}</h2>
-    <p>{{ book_detail.description }}</p>
+    <div class="row mt-4">
+        <div class="col-2">
+            <img class="book-pic" alt="Book picture" src="{{ book_detail.book_picture.url }}">
+        </div>
+        <div class="col-6">
+            <h3>{{ book_detail.title }}</h3><br>
+            <p>{{ book_detail.description }}</p>
+        </div>
+    </div>
     </body>
 {% endblock %}

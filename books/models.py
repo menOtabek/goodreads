@@ -1,3 +1,5 @@
+from django.db.models import ImageField
+
 from users.models import CustomUser
 from django.core.validators import MaxLengthValidator, MinValueValidator, MaxValueValidator
 from django.db import models
@@ -7,6 +9,7 @@ class Book(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     isbn = models.CharField(max_length=17)
+    book_picture = ImageField(default='Screenshot_from_2024-08-30_14-44-16.png')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
