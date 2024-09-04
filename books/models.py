@@ -46,7 +46,7 @@ class BookReview(models.Model):
     comment = models.TextField()
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    starts_given = models.IntegerField(validators=[MaxValueValidator(5), MinValueValidator(1)])
+    stars_given = models.IntegerField(validators=[MaxValueValidator(5), MinValueValidator(1)])
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

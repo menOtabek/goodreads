@@ -20,7 +20,7 @@
                         <div class="col-6 ms-4">
                             <a href="{% url 'books:book_detail' book.id %}">{{ book.title }}</a><br><br>
                             <p>
-                                {{ book.description }}
+                                {{ book.description | truncatechars:650}}
                             </p>
                         </div>
                     </div>
